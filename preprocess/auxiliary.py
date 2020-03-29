@@ -4,7 +4,9 @@
 
 # Pre-processing data for the chinese team's COVID-19 model
 import os
+import shlex
 
+import dcm2niix
 import numpy as np
 from scipy import ndimage
 
@@ -28,6 +30,30 @@ def make_dataset(dir, opt):
                         dataset.append(path)
 
     return zip(sorted(dataset), sorted(segmentation))
+
+def convertdcm(dir, opt):
+    dataset = []
+    dirs_ext = tuple(opt.dirs_ext)   
+    if os.path.exists(dir):
+        assert os.path.isdir(dir), '{} is not a valid directory'.format(dir)
+
+    if opt.d2n:
+        for root, dirs, fnames in sorted(os.walk(dir)):
+            if root.endswith(dir_ext):
+                base, part2 = os.path.split(root)
+                base, part1 = os.path.split(base)
+                _, part0 = os.path.split(base)
+                outname = part0 + '_' + part1 + '_' + part2
+                readableCmd = 'dcm2niix -f {} -i {} -s n -m y -z y -o {}'.format(outname,root,opt.savedir)
+                command = shlex.split(readableCmd)
+
+                logfilepath = os.path.join(opt.savedir, outname + "_conversion.log")
+                with open(logfilepath, "w") as outfile:
+                    subprocess.run(
+                        command, stdout=outfile, stderr=outfile)
+                dataset.append(os.path.join(opt.savedir,outname))
+
+    return dataset
 
 def transform_to_hu(medical_image, image):
     intercept = medical_image['scl_inter'] if not isnan(medical_image['scl_inter']) else 0

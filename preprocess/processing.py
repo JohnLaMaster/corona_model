@@ -27,7 +27,13 @@ class PreprocessFiles():
             self.savedir = self.path
     
     def process(self):
-        paths = make_dataset(opt.path, opt)
+        if self.opt.d2n: 
+            paths = convertdcm(opt.path, opt)
+            # seg = segment(paths) # Here is for the segmentation
+            paths = zip(sorted(paths), sorted(seg))
+        else: 
+            paths = make_dataset(opt.path, opt)
+
         for path1, path2 in paths:
             file1, file2 = nib.load(path1), nib.load(path2)
             header = file1.header

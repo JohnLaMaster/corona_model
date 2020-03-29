@@ -36,13 +36,15 @@ class Options():
         self.parser.add_argument('--path', type=str, help='path for directory of patient data to be loaded')
         self.parser.add_argument('--savedir', type=str, help='path for exporting output files')
         self.parser.add_argument('--file_ext', type=str, default=['.nii.gz', '_pred.nii.gz'], help='acceptable extensions for files to be loaded')
-        self.parser.add_argument('--add_ext', action='append', dest='file_ext', help='add additional acceptable file extensions')
+        self.parser.add_argument('--dir_ext', type=str, default=['202', '203'], help='acceptable directory names for files to be loaded')
+        self.parser.add_argument('--add_ext', action='append', dest='file_ext', help='add additional acceptable file extensions')       
         self.parser.add_argument('--threshold', type=float, default=0.30, help='threshold for slice selection')
         self.parser.add_argument('--slice', type=int, default=5, help='select slices every x mm within thresholded range')
         self.parser.add_argument('--no_plotDist', action='store_true', default=False, help='plot and save the segmentation mask distribution and selection per slice')
         self.parser.add_argument('--window_center', type=float, default=300, help='center for windowing Hu image')
         self.parser.add_argument('--window_width', type=float, default=1800, help='width for windowing Hu image')        
         self.parser.add_argument('--segLabel', type=str, default='pred', help='label identifying segmentation files')
+        self.parser.add_argument('--d2n', action='store_true', default=False, help='indicates when to process dicom files')
 
     def parse(self):
         if not self.initialized:
