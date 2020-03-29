@@ -47,11 +47,15 @@ def convertdcm(dir, opt):
                 readableCmd = 'dcm2niix -f {} -i {} -s n -m y -z y -o {}'.format(outname,root,opt.savedir)
                 command = shlex.split(readableCmd)
 
-                logfilepath = os.path.join(opt.savedir, outname + "_conversion.log")
-                with open(logfilepath, "w") as outfile:
-                    subprocess.run(
-                        command, stdout=outfile, stderr=outfile)
-                dataset.append(os.path.join(opt.savedir,outname))
+                try:
+                    logfilepath = os.path.join(opt.savedir, outname + "_conversion.log")
+                    with open(logfilepath, "w") as outfile:
+                        subprocess.run(
+                            command, stdout=outfile, stderr=outfile)
+                    dataset.append(os.path.join(opt.savedir,outname))
+                except Exception as e:
+                    print('error: ' + str(e))
+                    print("conversion error for:", root)
 
     return dataset
 
