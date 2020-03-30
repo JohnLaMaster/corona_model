@@ -12,9 +12,3 @@ else:
 	procedure.make_dataset()
 
 procedure.ct2jpg()
-
-
-
-# consistently check data
-# download and preprocess
-# Florian, Oliver, Sandeep - preprocessing
