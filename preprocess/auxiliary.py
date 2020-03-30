@@ -1,14 +1,12 @@
-# Script for running the file
-# python preprocess_corona_model.py --path '/home/john/Documents/Research/Covid-19/wetransfer-dfc8e0/case1' --window_center -600 --window_width 1200
 # Version 0.0.2
 
 # Pre-processing data for the chinese team's COVID-19 model
 import os
 import shlex
 
-import dcm2niix
 import numpy as np
 from scipy import ndimage
+from skimage.transform import rescale
 
 
 # Auxiliary functions
@@ -91,7 +89,8 @@ def resample(image, image_thickness, pixel_spacing):
     new_shape = np.round(new_shape)
     resize_factor = new_shape / image_shape
     
-    resampled_image = ndimage.interpolation.zoom(image, resize_factor)
+    # resampled_image = ndimage.interpolation.zoom(image, resize_factor)    # I read as of 2017, this had a lot of bugs. If it's been fixed, then it's another option
+    resampled_image = rescale(image, resize_factor, anti_aliasing=True)
     
     return resampled_image
 

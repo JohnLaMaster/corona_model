@@ -1,5 +1,3 @@
-# Script for running the file
-# python preprocess_corona_model.py --path '/home/john/Documents/Research/Covid-19/wetransfer-dfc8e0/case1' --window_center -600 --window_width 1200
 # Version 0.0.2
 
 # Pre-processing data for the chinese team's COVID-19 model
@@ -8,9 +6,8 @@ import os
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
+from auxiliary import *
 from PIL import Image
-
-from ./auxiliary import *
 
 
 # Primary Workload
@@ -40,8 +37,9 @@ class PreprocessFiles():
             self.paths = zip(sorted(self.nifti), sorted(self.seg))
         else:
             self.paths = make_dataset(self.opt.path, self.opt)
-    
+
     def ct2jpg(self):
+        print('>>> Processing CT scans and converting to jpg...')
         for path1, path2 in self.paths:
             file1, file2 = nib.load(path1), nib.load(path2)
             header = file1.header
