@@ -5,4 +5,16 @@ from .processing import PreprocessFiles
 opt = Options().parse()
 procedure = PreprocessFiles(opt)
 
-procedure.process()
+if opt.d2n:
+	procedure.convert2nifti()
+	procedure.segment()
+else:
+	procedure.make_dataset()
+
+procedure.ct2jpg()
+
+
+
+# consistently check data
+# download and preprocess
+# Florian, Oliver, Sandeep - preprocessing

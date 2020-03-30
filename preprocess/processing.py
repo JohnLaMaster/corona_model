@@ -25,16 +25,24 @@ class PreprocessFiles():
                 os.makedirs(self.savedir)
         else: 
             self.savedir = self.path
-    
-    def process(self):
-        if self.opt.d2n: 
-            paths = convertdcm(opt.path, opt)
-            # seg = segment(paths) # Here is for the segmentation
-            paths = zip(sorted(paths), sorted(seg))
-        else: 
-            paths = make_dataset(opt.path, opt)
 
-        for path1, path2 in paths:
+    def convert2nifti(self):
+        print('>>> Converting dicom files to nifti...')
+        self.nifti = convertdcm(self.opt.path, self.opt)
+
+    def segment(self):
+        print('>>> Segmenting nifti files...')
+        # seg = segment(paths) # Here is for the segmentation
+
+    def makeDataset(self):
+        print('>>> Compiling dataset...')
+        if self.opt.d2n:
+            self.paths = zip(sorted(self.nifti), sorted(self.seg))
+        else:
+            self.paths = make_dataset(self.opt.path, self.opt)
+    
+    def ct2jpg(self):
+        for path1, path2 in self.paths:
             file1, file2 = nib.load(path1), nib.load(path2)
             header = file1.header
             medical_image = np.asarray(file1.get_fdata())
