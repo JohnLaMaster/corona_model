@@ -16,8 +16,7 @@ def make_dataset(dir, opt):
     if os.path.exists(dir):
         assert os.path.isdir(dir), '{} is not a valid directory'.format(dir)
 
-    # print(sorted(os.walk(dir)))
-    for root, dirs, fnames in sorted(os.walk(dir)):
+    for root, dirs, fnames in sorted(os.walk(str(dir))):
         for fname in fnames:
             if not fname.startswith('._'):
                 if fname.endswith(file_ext):

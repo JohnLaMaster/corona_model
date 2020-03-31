@@ -6,7 +6,7 @@
 import argparse
 import os
 
-from pathlib import Path
+from pathlib import PurePosixPath
 
 
 # Options
@@ -20,15 +20,15 @@ class Options():
         attributes = ['path', 'savedir']
         for attr in attributes:
             if hasattr(self.opt, attr):
-                setattr(self.opt, attr, Path(getattr(self.opt, attr))) # Should adjust paths according to operating system
+                setattr(self.opt, attr, PurePosixPath(getattr(self.opt, attr))) # Should adjust paths according to operating system
                 # check if it is a valid path string, e.g. if it exists
-                if os.path.isabs(getattr(self.opt, attr)):
-                    return
-                elif os.path.isabs(getattr(self.opt, attr)[1:-1]):
-                    setattr(self.opt, attr, getattr(self.opt, attr)[1:-1])
-                else:
-                    print('The given argument is not valid: {}'.format(getattr(self.opt, attr)))
-                    return
+                # if os.path.isabs(getattr(self.opt, attr)):
+                #     return
+                # elif os.path.isabs(getattr(self.opt, attr)[1:-1]):
+                #     setattr(self.opt, attr, Path(getattr(self.opt, attr)))
+                # else:
+                #     print('The given argument is not valid: {}'.format(getattr(self.opt, attr)))
+                #     return
             else:
                 return        
 
